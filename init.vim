@@ -47,6 +47,8 @@ au BufNewFile,BufRead *.py,*.java,*.cpp,*.c,*.cs,*.rkt,*.h,*.html
     \ set autoindent |
     \ set fileformat=unix |
 
+autocmd BufNewFile *.cpp 0r ~/.vim/templates/skeleton.cpp
+
 set encoding=utf-8
 
 syntax on
@@ -143,8 +145,8 @@ let g:syntastic_cpp_compiler_options = ' -std=c++11'
 augroup compileandrun
     autocmd!
     autocmd filetype python nnoremap <f5> :w <bar> :!python3 % <cr>
-    autocmd filetype cpp nnoremap <f5> :w <bar> !g++ -std=c++11 % <cr> :vnew <bar> :te "./a.exe" <cr><cr>
-    autocmd filetype cpp nnoremap <f6> :vnew <bar> :te "a.exe" <cr>
+    autocmd filetype cpp nnoremap <f5> :let f=expand("%:p:r")..".out"<bar>:w <bar> !g++ -std=c++11 % -o %:r.out <cr>:vnew <bar> execute 'te "' . f . '"' <cr><cr>
+    autocmd filetype cpp nnoremap <f6> :let f=expand("%:r")..".out"<bar>:vnew <bar> execute 'te "' . f . '"'<cr>
     autocmd filetype c nnoremap <f5> :w <bar> !make %:r && ./%:r <cr>
     autocmd filetype java nnoremap <f5> :w <bar> !javac % && java %:r <cr>
 augroup END
